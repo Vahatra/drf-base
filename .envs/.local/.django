@@ -1,0 +1,11 @@
+# General
+# ------------------------------------------------------------------------------
+DJANGO_SECRET_KEY=Ece1MeikXUBQ1n2KOqXtmBWTqdlDLoIkVoOA2YWRSt95j9tYfwBQwTpRD7KNhoPh
+
+JWT_SIGNING_KEY=8k6ifvMXVg2pbfPNSfrLDpwKqRqAGfyxAqDz68Gaph3MH12XmVLAp8t4RZvwwpMi
+JWT_AUDIENCE=myapp
+JWT_ISSUER=example.com
+
+# Database
+# ------------------------------------------------------------------------------
+DATABASE_URL=postgres://debug:debug@127.0.0.1:5432/myapp

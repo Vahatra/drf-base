@@ -1,0 +1,111 @@
+# ==== ruff ====
+[tool.ruff]
+target-version = "py311"
+extend-exclude = ["*/migrations/*"]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+    "UP", # pyupgrade
+]
+ignore = [
+    "E501", # line too long, handled by black
+    "B008", # do not perform function calls in argument defaults
+    "C901", # too complex
+    "W191", # indentation contains tabs
+]
+
+
+# ==== pytest ====
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--ds=config.settings.test --reuse-db"
+python_files = ["tests.py", "test_*.py"]
+filterwarnings = "ignore:pkg_resources is deprecated as an API:DeprecationWarning"
+markers = [
+    # API tests that need a running instance (will modify the db)
+    "api_tests",
+]
+
+# ==== Coverage ====
+[tool.coverage.run]
+include = ["app/**"]
+omit = ["*/migrations/*", "*/tests/*"]
+plugins = ["django_coverage_plugin"]
+
+
+# ==== mypy ====
+[tool.mypy]
+python_version = "3.11"
+check_untyped_defs = true
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
+
+[[tool.mypy.overrides]]
+# Django migrations should not produce any errors:
+module = "*.migrations.*"
+ignore_errors = true
+
+[tool.django-stubs]
+django_settings_module = "config.settings.test"
+
+
+# ==== poetry ====
+[tool.poetry]
+name = "app"
+version = "0.1.0"
+description = "A base DRF project."
+authors = ["Vahatra Harilalanjatovo <h.vahatra.d@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+argon2-cffi = "23.1.0"                           # https://github.com/hynek/argon2_cffi
+psycopg = { version = "3.1.12", extras = ["c"] } # https://github.com/psycopg/psycopg
+
+# Django
+django = "4.2.6"             # https://www.djangoproject.com/
+django-environ = "0.11.2"    # https://github.com/joke2k/django-environ
+django-model-utils = "4.3.1" # https://github.com/jazzband/django-model-utils
+django-structlog = "6.0.0"   # https://github.com/jrobichaud/django-structlog
+
+# Django REST Framework
+django-cors-headers = "4.3.0"           # https://github.com/adamchainz/django-cors-headers
+django-filter = "23.3"                  # https://github.com/carltongibson/django-filter
+djangorestframework = "3.14.0"          # https://github.com/encode/django-rest-framework
+djangorestframework-simplejwt = "5.3.0" # https://github.com/jazzband/djangorestframework-simplejwt
+djangorestframework-xml = "2.0.0"       # https://github.com/jpadilla/django-rest-framework-xml
+
+# DRF-spectacular for api documentation
+drf-spectacular = "0.26.5" # https://github.com/tfranzel/drf-spectacular
+
+[tool.poetry.group.dev.dependencies]
+# Code quality
+django-stubs = { version = "4.2.5", extras = ["compatible-mypy"] }               # https://github.com/typeddjango/django-stubs
+djangorestframework-stubs = { version = "3.14.4", extras = ["compatible-mypy"] } # https://github.com/typeddjango/djangorestframework-stubs
+mypy = "1.6.1"                                                                   # https://github.com/python/mypy
+pre-commit = "3.5.0"                                                             # https://github.com/pre-commit/pre-commit
+ruff = "^0.1.4"                                                                  # https://github.com/astral-sh/ruff
+
+# Testing
+django-coverage-plugin = "3.1.0" # https://github.com/nedbat/django_coverage_plugin
+factory-boy = "3.3.0"            # https://github.com/FactoryBoy/factory_boy
+pytest = "7.4.2"                 # https://github.com/pytest-dev/pytest
+pytest-asyncio = "0.21.1"        # https://github.com/pytest-dev/pytest-asyncio
+pytest-cov = "4.1.0"             # https://github.com/pytest-dev/pytest-cov
+pytest-django = "4.5.2"          # https://github.com/pytest-dev/pytest-django
+pytest-xdist = "3.3.1"           # https://github.com/pytest-dev/pytest-xdist
+httpx = "0.25.0"                 # https://github.com/encode/httpx/
+
+[tool.poetry.group.prod.dependencies]
+gunicorn = "21.2.0" # https://github.com/benoitc/gunicorn
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

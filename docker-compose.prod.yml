@@ -1,0 +1,63 @@
+version: '3'
+
+volumes:
+  prod_postgres_data: {}
+  prod_postgres_data_backups: {}
+  prod_traefik: {}
+  prod_django_media: {}
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/prod/django/Dockerfile
+    image: myapp_prod_django
+    container_name: myapp_prod_django
+    volumes:
+      - prod_django_media:/app/myapp/media
+    depends_on:
+      - postgres
+      # - redis
+    env_file:
+      - ./.envs/.prod/.django
+      - ./.envs/.prod/.postgres
+    command: /start
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/prod/postgres/Dockerfile
+    image: myapp_prod_postgres
+    container_name: myapp_prod_postgres
+    volumes:
+      - prod_postgres_data:/var/lib/postgresql/data
+      - prod_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.prod/.postgres
+
+  traefik:
+    build:
+      context: .
+      dockerfile: ./compose/prod/traefik/Dockerfile
+    image: myapp_prod_traefik
+    container_name: myapp_prod_traefik
+    depends_on:
+      - django
+    volumes:
+      - prod_traefik:/etc/traefik/acme
+    ports:
+      - '0.0.0.0:80:80'
+      # - '0.0.0.0:443:443'
+
+  # redis:
+  #   image: redis:6
+
+  # nginx:
+  #   build:
+  #     context: .
+  #     dockerfile: ./compose/prod/nginx/Dockerfile
+  #   image: myapp_local_nginx
+  #   depends_on:
+  #     - django
+  #   volumes:
+  #     - prod_django_media:/usr/share/nginx/media:ro

@@ -1,0 +1,30 @@
+# General
+# ------------------------------------------------------------------------------
+DJANGO_READ_DOT_ENV_FILE=False
+DJANGO_SETTINGS_MODULE=config.settings.prod
+DJANGO_SECRET_KEY=uPGJrySAzSBC7nskvoyTQCKieJfpyPzADhJaddKLeHPAPYgTVVH3kBw9uBcrpGPJ
+DJANGO_ALLOWED_HOSTS=myapp.localhost
+
+JWT_SIGNING_KEY=8k6ifvMXVg2pbfPNSfrLDpwKqRqAGfyxAqDz68Gaph3MH12XmVLAp8t4RZvwwpMi
+JWT_AUDIENCE=myapp.localhost
+JWT_ISSUER=myapp.localhost
+
+# Database
+# ------------------------------------------------------------------------------
+DATABASE_URL=postgres://debug:debug@postgres:5432/myapp
+
+# Security
+# ------------------------------------------------------------------------------
+DJANGO_SECURE_SSL_REDIRECT=False
+
+# # Email
+# # ------------------------------------------------------------------------------
+# DJANGO_SERVER_EMAIL=
+
+# Gunicorn
+# ------------------------------------------------------------------------------
+WEB_CONCURRENCY=4
+
+# # Redis
+# # ------------------------------------------------------------------------------
+# REDIS_URL=redis://redis:6379/0
