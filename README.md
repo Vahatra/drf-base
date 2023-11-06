@@ -7,8 +7,6 @@
 │   ├── .pord.example # prod example env files
 ├── myapp
 │   ├── auth # authentication app
-│   ├── book # book app
-│   │   ├── tests # book unit tests
 │   ├── core # global and common codes
 │   ├── users # users app
 │   │   ├── tests # users unit tests
